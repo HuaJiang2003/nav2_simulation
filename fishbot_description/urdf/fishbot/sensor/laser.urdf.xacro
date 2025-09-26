@@ -32,8 +32,6 @@
             <xacro:cylinder_inertia m="0.01" r="0.01" h="0.10" />
         </link>
 
-
-
         <joint name="laser_cylinder_joint" type="fixed">
             <parent link="base_link" />
             <child link="laser_cylinder_link" />

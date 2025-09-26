@@ -2,9 +2,7 @@
 
 ## 1.项目介绍
 
-本项目基于 ROS 2 和  Navigation 2 设计了一个自动巡检机器人仿真功能。
-
-该巡检机器人要能够在不同的目标点之间进行循环移动，每到达一个目标点后首先通过语音播放到达的目标点信息，接着通过摄像头采集一张实时的图像并保存到本地。
+本项目旨在在 Navigation2 利用 Mid360 以及 Fast_Lio 设计了一个自动巡检机器人仿真功能。
 
 各功能包功能如下：
 - fishbot_description 机器人描述文件，包含仿真相关配置
@@ -13,6 +11,9 @@
 - fishbot_application_cpp 机器人导航应用 C++ 代码
 - autopatrol_interfaces  自动巡检相关接口
 - autopatrol_robot  自动巡检实现功能包
+- FAST_LIO_ROS2  建图包
+- livox_laser_simulation_ros2  mid360仿真驱动包
+- livox_ros_driver2  mid360驱动包
 
 ## 2.使用方法
 
@@ -64,6 +65,20 @@ source install/setup.bash
 ros2 launch fishbot_description gazebo_sim.launch.py
 ```
 
+建图
+
+```
+#终端2 启动slam建图功能
+source install/setup.bash
+ros2 launch slam_toolbox online_async_launch.py use_sim_time:=True
+#终端3 打开rviz，可视化建图
+rviz2
+#终端4 键盘控制节点（控制机器人移动）
+ros2 run teleop_twist_keyboard teleop_twist_keyboard 
+#终端5 保存地图（在地图文件夹打开终端）
+ros2 run nav2_map_server map_saver_cli -f room
+```
+
 运行导航
 
 ```
@@ -78,7 +93,14 @@ source install/setup.bash
 ros2 launch autopatrol_robot autopatrol.launch.py
 ```
 
+
+```
+# 若gazebo无法启动，请运行下面的指令
+source /usr/share/gazebo/setup.bash
+# 若系统中安装有虚拟环境请删除build文件夹后运行下面的指令
+source /opt/ros/humble/setup.bash
+```
+
 ## 3.作者
 
-- [fishros](https://github.com/fishros)
-- [jh](https://github.com/JH666666)
+- [jh](https://github.com/HuaJiang2003)

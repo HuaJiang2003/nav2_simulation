@@ -23,14 +23,6 @@ class PatrolNode(BasicNavigator):
         self.listener_ = TransformListener(self.buffer_, self)
         self.Speech_client_ = self.create_client(SpeechText, 'speech_text')
 
-        # 订阅与保存图像相关定义
-        self.declare_parameter('image_save_path', '')
-        self.image_save_path = self.get_parameter('image_save_path').value
-        self.bridge = CvBridge()
-        self.latest_image = None
-        self.subscription_image = self.create_subscription(
-            Image, '/camera_sensor/image_raw', self.image_callback, 10)
-
     def image_callback(self, msg):
         """
         将最新的消息放到 latest_image 中

@@ -3,17 +3,19 @@
     <xacro:include filename="$(find fishbot_description)/urdf/fishbot/base.urdf.xacro" />
     <!-- 传感器组件 -->
     <xacro:include filename="$(find fishbot_description)/urdf/fishbot/sensor/imu.urdf.xacro" />
-    <xacro:include filename="$(find fishbot_description)/urdf/fishbot/sensor/laser.urdf.xacro" />
-    <xacro:include filename="$(find fishbot_description)/urdf/fishbot/sensor/camera.urdf.xacro" />
+    <!-- <xacro:include filename="$(find fishbot_description)/urdf/fishbot/sensor/laser.urdf.xacro" /> -->
+    <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
      <!-- 执行器组件 -->
     <xacro:include filename="$(find fishbot_description)/urdf/fishbot/actuator/wheel.urdf.xacro" />
     <xacro:include filename="$(find fishbot_description)/urdf/fishbot/actuator/caster.urdf.xacro" />
 
     <xacro:base_xacro length="0.12" radius="0.1" />
     <!-- 传感器 -->
-    <xacro:imu_xacro xyz="0 0 0.02" />
-    <xacro:laser_xacro xyz="0 0 0.10" />
-    <xacro:camera_xacro xyz="0.10 0 0.075" />
+    <xacro:imu_xacro xyz="0 0 0.05" />
+    <!-- <xacro:laser_xacro xyz="0 0 0.10" /> -->
+    <xacro:mid360 name="livox" parent="base_link" topic="mid360">
+        <origin xyz="0 0 0.08" rpy="0 0 0"/>
+    </xacro:mid360>
     <!-- 执行器主动轮+从动轮 -->
     <xacro:wheel_xacro wheel_name="left" xyz="0 0.10 -0.06" />
     <xacro:wheel_xacro wheel_name="right" xyz="0 -0.10 -0.06" />
