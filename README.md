@@ -50,11 +50,11 @@ cd ~/ros_ws
 git clone --recursive https://github.com/HuaJiang2003/nav2_simulation.git
 ```
 
-克隆仓库后FAST_LIO_ROS2可能缺失ikd-Tree，在目录src/FAST_LIO_ROS2/include/ikd-Tree下，请自行down一个。
+    克隆仓库后FAST_LIO_ROS2可能缺失ikd-Tree，在目录src/FAST_LIO_ROS2/include/ikd-Tree下，请自行down一个。
 
 3. 更改子模块相关参数
 
-    - FAST_LIO_ROS2：更改lidar和imu的接收话题，本工程中为"/mid360_PointCloud2"和"/imu",use_sim_time:=True!!!
+    FAST_LIO_ROS2：更改lidar和imu的接收话题，本工程中为"/mid360_PointCloud2"和"/imu",use_sim_time:=True!!!
 
 ### 2.2运行
 
