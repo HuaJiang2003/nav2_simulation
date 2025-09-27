@@ -3,6 +3,7 @@
 ## 1.项目介绍
 
 本项目旨在在 Navigation2 利用 Mid360 以及 Fast_Lio 设计了一个自动巡检机器人仿真功能。
+目前尚未完善，只实现了建图功能，且整个工程依托答辨，谨慎使用
 
 各功能包功能如下：
 - fishbot_description 机器人描述文件，包含仿真相关配置
@@ -24,23 +25,13 @@
 
 ### 2.1安装
 
-本项目建图采用 slam-toolbox，导航采用 Navigation 2 ,仿真采用 Gazebo，运动控制采用 ros2-control 实现，构建之前请先安装依赖，指令如下：
+本项目建图采用 fastlio，导航(准备)采用 Navigation 2,仿真采用 Gazebo，运动控制采用 ros2-control 实现，构建之前请先安装依赖，指令如下：
 
-1. 安装 SLAM 和 Navigation 2
+1. 安装依赖
 
 ```
 sudo apt install ros-$ROS_DISTRO-nav2-bringup ros-$ROS_DISTRO-slam-toolbox
-```
-
-2. 安装仿真相关功能包
-
-```
 sudo apt install ros-$ROS_DISTRO-robot-state-publisher  ros-$ROS_DISTRO-joint-state-publisher ros-$ROS_DISTRO-gazebo-ros-pkgs ros-$ROS_DISTRO-ros2-controllers ros-$ROS_DISTRO-xacro
-```
-
-3. 安装语音合成和图像相关功能包
-
-```
 sudo apt install python3-pip  -y
 sudo apt install espeak-ng -y
 sudo pip3 install espeakng
@@ -48,51 +39,69 @@ sudo apt install ros-$ROS_DISTRO-tf-transformations
 sudo pip3 install transforms3d
 ```
 
-### 2.2运行
-
-安装完成依赖后，可以使用 colcon 工具进行构建和运行。
-
-构建功能包
+2. 创建工作空间
 
 ```
+mkdir -p ~/ros_ws
+cd ~/ros_ws
+```
+
+```
+git clone --recursive https://github.com/HuaJiang2003/nav2_simulation.git
+```
+
+克隆仓库后FAST_LIO_ROS2可能缺失ikd-Tree，在目录src/FAST_LIO_ROS2/include/ikd-Tree下，请自行down一个。
+
+3. 更改子模块相关参数
+
+    - FAST_LIO_ROS2：更改lidar和imu的接收话题，本工程中为"/mid360_PointCloud2"和"/imu",use_sim_time:=True!!!
+
+### 2.2运行
+
+安装完成依赖后，可进行构建和运行。
+
+1. Build the Livox ROS Driver 2:
+
+```
+cd src/livox_ros_driver2
+source /opt/ros/humble/setup.sh
+./build.sh humble
+```
+
+2. 构建功能包
+
+```
+cd ~/ros_ws
 colcon build
 ```
 
-运行仿真
+3. 运行仿真
 
 ```
 source install/setup.bash
 ros2 launch fishbot_description gazebo_sim.launch.py
 ```
 
-建图
+4. 建图
+
+- 新建终端 启动fastlio建图功能
 
 ```
-#终端2 启动slam建图功能
 source install/setup.bash
-ros2 launch slam_toolbox online_async_launch.py use_sim_time:=True
-#终端3 打开rviz，可视化建图
-rviz2
-#终端4 键盘控制节点（控制机器人移动）
+ros2 launch fast_lio mapping.launch.py 
+```
+
+- 新建终端 键盘控制节点（控制机器人移动）
+
+```
 ros2 run teleop_twist_keyboard teleop_twist_keyboard 
-#终端5 保存地图（在地图文件夹打开终端）
-ros2 run nav2_map_server map_saver_cli -f room
 ```
 
-运行导航
+- 新建终端 保存地图
 
-```
-source install/setup.bash
-ros2 launch fishbot_navigation2 navigation2.launch.py
-```
+    打开 RQt 并选择 Plugins->Services->Service Caller. 触发 service/map_save, pcd地图即可保存。
 
-运行自动巡检
-
-```
-source install/setup.bash
-ros2 launch autopatrol_robot autopatrol.launch.py
-```
-
+5. 一些环境上的注意事项，我安装了conda，所以这里较乱
 
 ```
 # 若gazebo无法启动，请运行下面的指令
