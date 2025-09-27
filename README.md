@@ -3,6 +3,7 @@
 ## 1.项目介绍
 
 本项目旨在在 Navigation2 利用 Mid360 以及 Fast_Lio 设计了一个自动巡检机器人仿真功能。
+
 目前尚未完善，只实现了建图功能，且整个工程依托答辨，谨慎使用
 
 各功能包功能如下：
@@ -114,7 +115,7 @@ source /opt/ros/humble/setup.bash
 
 ![环境与建图效果](https://raw.githubusercontent.com/HuaJiang2003/nav2_simulation/main/fishbot_description/images/1.png)
 
-目前因为配置原因并未移动机器人实现整个地图的构建，电脑卡爆了。。。。。。。
+目前因为配置原因并未移动机器人实现整个地图的构建，电脑卡爆了。。。。。。。。
 
 ## 4.作者
 
