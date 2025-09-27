@@ -112,7 +112,9 @@ source /opt/ros/humble/setup.bash
 
 ## 3.效果演示
 
+![环境与建图效果](https://raw.githubusercontent.com/HuaJiang2003/nav2_simulation/main/fishbot_description/images/1.png)
 
+目前因为配置原因并未移动机器人实现整个地图的构建，电脑卡爆了。。。。。。。
 
 ## 4.作者
 
