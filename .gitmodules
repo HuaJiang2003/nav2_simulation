@@ -1,0 +1,14 @@
+[submodule "FAST_LIO_ROS2"]
+	path = FAST_LIO_ROS2
+	url = https://github.com/Ericsii/FAST_LIO_ROS2.git
+	branch = ros2
+
+[submodule "livox_laser_simulation_ros2"]
+	path = livox_laser_simulation_ros2
+	url = https://github.com/LCAS/livox_laser_simulation_ros2.git
+	branch = main
+	
+[submodule "livox_ros_driver2"]
+	path = livox_ros_driver2
+	url = https://github.com/Livox-SDK/livox_ros_driver2.git
+	branch = master
