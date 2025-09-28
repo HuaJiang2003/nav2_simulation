@@ -28,32 +28,108 @@
 
 本项目建图采用 fastlio，导航(准备)采用 Navigation 2,仿真采用 Gazebo，运动控制采用 ros2-control 实现，构建之前请先安装依赖，指令如下：
 
-1. 安装依赖
+#### 2.1.1 安装依赖
 
+1. 导航与SLAM相关
+```shell 
+# 导航系统核心包
+sudo apt install ros-$ROS_DISTRO-nav2-bringup
+# SLAM（同步定位与地图构建）
+sudo apt install ros-$ROS_DISTRO-slam-toolbox
 ```
-sudo apt install ros-$ROS_DISTRO-nav2-bringup ros-$ROS_DISTRO-slam-toolbox
-sudo apt install ros-$ROS_DISTRO-robot-state-publisher  ros-$ROS_DISTRO-joint-state-publisher ros-$ROS_DISTRO-gazebo-ros-pkgs ros-$ROS_DISTRO-ros2-controllers ros-$ROS_DISTRO-xacro
-sudo apt install python3-pip  -y
-sudo apt install espeak-ng -y
-sudo pip3 install espeakng
+
+2. 机器人模型与状态发布
+```shell 
+# 机器人模型描述和状态发布
+sudo apt install ros-$ROS_DISTRO-robot-state-publisher
+sudo apt install ros-$ROS_DISTRO-joint-state-publisher
+sudo apt install ros-$ROS_DISTRO-xacro
+```
+
+3. 仿真与Gazebo集成
+```shell 
+# Gazebo仿真环境
+sudo apt install ros-$ROS_DISTRO-gazebo-ros-pkgs
+```
+
+4. ROS2控制系统（核心）
+```shell 
+# ROS2控制框架核心
+sudo apt install ros-humble-ros2-control
+sudo apt install ros-humble-ros2-controllers
+
+# Gazebo与ROS2控制集成
+sudo apt install ros-humble-gazebo-ros2-control
+```
+
+5. 控制器具体实现
+```shell 
+# 关节状态相关控制器
+sudo apt install ros-humble-joint-state-publisher
+sudo apt install ros-humble-joint-state-broadcaster
+# 差分驱动控制器（移动机器人）
+sudo apt install ros-humble-diff-drive-controller
+# 控制器管理器
+sudo apt install ros-humble-controller-manager
+sudo apt install ros-humble-controller-manager-msgs
+```
+
+6. 坐标变换与数学计算
+```shell 
+# 坐标变换工具
 sudo apt install ros-$ROS_DISTRO-tf-transformations
 sudo pip3 install transforms3d
 ```
 
-2. 创建工作空间
-
+7. 语音与工具包
+```shell 
+# 语音合成
+sudo apt install espeak-ng -y
+sudo pip3 install espeakng
+# Python包管理
+sudo apt install python3-pip -y
 ```
+
+8. 点云处理
+```shell 
+# 安装 pcl_ros 和相关依赖
+sudo apt install ros-humble-pcl-ros
+sudo apt install ros-humble-tf2-geometry-msgs
+sudo apt install ros-humble-laser-geometry
+```
+
+9. 地图所需元素
+```shell
+mkdir -p ~/.gazebo
+cd ~/.gazebo
+git clone https://gitee.com/ohhuo/gazebo_models.git ~/.gazebo/models
+rm -rf ~/.gazebo/models/.git
+```
+
+10. 安装 Livox-SDK2
+```shell
+git clone https://github.com/Livox-SDK/Livox-SDK2.git
+cd ./Livox-SDK2/
+mkdir build
+cd build
+cmake .. && make -j
+sudo make install
+```
+
+#### 2.1.2 创建工作空间
+
+```shell
 mkdir -p ~/ros_ws
 cd ~/ros_ws
 ```
 
-```
+```shell
 git clone --recursive https://github.com/HuaJiang2003/nav2_simulation.git
 ```
 
     克隆仓库后FAST_LIO_ROS2可能缺失ikd-Tree，在目录src/FAST_LIO_ROS2/include/ikd-Tree下，请自行down一个。
 
-3. 更改子模块相关参数
+#### 2.1.3 更改子模块相关参数
 
     FAST_LIO_ROS2：更改lidar和imu的接收话题，本工程中为"/mid360_PointCloud2"和"/imu",use_sim_time:=True!!!
 
@@ -63,7 +139,7 @@ git clone --recursive https://github.com/HuaJiang2003/nav2_simulation.git
 
 1. Build the Livox ROS Driver 2:
 
-```
+```shell
 cd src/livox_ros_driver2
 source /opt/ros/humble/setup.sh
 ./build.sh humble
@@ -71,14 +147,14 @@ source /opt/ros/humble/setup.sh
 
 2. 构建功能包
 
-```
+```shell
 cd ~/ros_ws
 colcon build
 ```
 
 3. 运行仿真
 
-```
+```shell
 source install/setup.bash
 ros2 launch fishbot_description gazebo_sim.launch.py
 ```
@@ -87,14 +163,14 @@ ros2 launch fishbot_description gazebo_sim.launch.py
 
 - 新建终端 启动fastlio建图功能
 
-```
+```shell
 source install/setup.bash
 ros2 launch fast_lio mapping.launch.py 
 ```
 
 - 新建终端 键盘控制节点（控制机器人移动）
 
-```
+```shell
 ros2 run teleop_twist_keyboard teleop_twist_keyboard 
 ```
 
@@ -104,7 +180,7 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 5. 一些环境上的注意事项，我安装了conda，所以这里较乱
 
-```
+```shell
 # 若gazebo无法启动，请运行下面的指令
 source /usr/share/gazebo/setup.bash
 # 若系统中安装有虚拟环境请删除build文件夹后运行下面的指令
